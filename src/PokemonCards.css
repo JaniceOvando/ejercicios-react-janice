@@ -1,0 +1,65 @@
+.pk-container {
+  padding: 24px;
+  font-family: system-ui, sans-serif;
+  background-color: #f4f4f4;
+  min-height: 100vh;
+}
+
+.pk-heading {
+  color: #d32f2f;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.pk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 18px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.pk-card {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  padding-bottom: 16px;
+}
+
+.pk-image {
+  width: 120px;
+  height: 120px;
+  margin: 12px auto 0 auto;
+  display: block;
+  image-rendering: pixelated;
+}
+
+.pk-name {
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin: 8px 0 4px 0;
+}
+
+.pk-types {
+  color: #6b7280;
+  font-size: 14px;
+  text-transform: capitalize;
+  margin: 0 0 4px 0;
+}
+
+.pk-stats {
+  color: #374151;
+  font-size: 13px;
+  margin: 0;
+}
+
+.pk-error,
+.pk-loading {
+  padding: 24px;
+  text-align: center;
+}
