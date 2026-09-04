@@ -12,6 +12,7 @@ interface PokemonDetail {
   height: number;
   weight: number;
   types: { type: { name: string } }[];
+  abilities: { ability: { name: string } }[];
   sprites: { front_default: string };
 }
 
@@ -22,15 +23,13 @@ function PokemonCards() {
   useEffect(() => {
     async function loadPokemons() {
       try {
-        // 1. Trae la lista base (nombre + url) de los primeros 20 pokemones
         const listResponse = await fetch(
-          "https://pokeapi.co/api/v2/pokemon?limit=20"
+          "https://pokeapi.co/api/v2/pokemon?limit=9"
         );
         if (!listResponse.ok) throw new Error("No se pudo obtener la lista");
         const listData: { results: PokemonSummary[] } =
           await listResponse.json();
 
-        // 2. Por cada uno, pide el detalle (imagen, tipos, peso, altura)
         const details = await Promise.all(
           listData.results.map((p) =>
             fetch(p.url).then((res) => res.json() as Promise<PokemonDetail>)
@@ -46,28 +45,45 @@ function PokemonCards() {
     loadPokemons();
   }, []);
 
+  function verPerfil(pokemon: PokemonDetail) {
+    const tipos = pokemon.types.map((t) => t.type.name).join(", ");
+    const habilidades = pokemon.abilities
+      .map((a) => a.ability.name)
+      .join(", ");
+
+    alert(
+      `Nombre: ${pokemon.name}\n` +
+        `Tipo(s): ${tipos}\n` +
+        `Altura: ${pokemon.height / 10} m\n` +
+        `Peso: ${pokemon.weight / 10} kg\n` +
+        `Habilidades: ${habilidades}`
+    );
+  }
+
   if (error) return <div className="pk-error">Error: {error}</div>;
   if (!pokemons) return <div className="pk-loading">Cargando...</div>;
 
   return (
     <div className="pk-container">
-      <h1 className="pk-heading">Pokédex</h1>
+      <h1 className="pk-heading">Pokemones</h1>
 
-      <div className="pk-grid">
+      <div className="pk-list">
         {pokemons.map((pokemon) => (
-          <div key={pokemon.id} className="pk-card">
+          <div key={pokemon.id} className="pk-row">
             <img
               src={pokemon.sprites.front_default}
               alt={pokemon.name}
-              className="pk-image"
+              className="pk-thumb"
             />
-            <h2 className="pk-name">{pokemon.name}</h2>
-            <p className="pk-types">
-              {pokemon.types.map((t) => t.type.name).join(" / ")}
-            </p>
-            <p className="pk-stats">
-              {pokemon.height / 10} m &middot; {pokemon.weight / 10} kg
-            </p>
+            <div className="pk-info">
+              <span className="pk-name">{pokemon.name}</span>
+              <span className="pk-type">
+                Type: {pokemon.types.map((t) => t.type.name).join(", ")}
+              </span>
+            </div>
+            <button className="pk-btn" onClick={() => verPerfil(pokemon)}>
+              VER PERFIL
+            </button>
           </div>
         ))}
       </div>
